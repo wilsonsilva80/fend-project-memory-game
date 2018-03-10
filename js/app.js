@@ -1,14 +1,10 @@
 /*
  * Create a list that holds all of your cards
  */
-
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+function cardList(){
+    const cards = document.querySelectorAll('.deck  li');
+    return cards;
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -25,6 +21,40 @@ function shuffle(array) {
     return array;
 }
 
+/*
+ * Display the cards on the page
+ *   - shuffle the list of cards using the provided "shuffle" method below
+ *   - loop through each card and create its HTML
+ *   - add each card's HTML to the page
+ */
+function displayCards(cards){
+    const arr = [];
+    let addHTML = '';
+
+    //retrieve trimmed HTML of each card
+    for(let i = 0; i < cards.length; i++){
+        let card = cards[i].outerHTML.trim();
+        arr.push(card);
+    }
+
+    //shuffle the cards
+    const shuffled = shuffle(arr);
+    console.log('shuffle ' + shuffled);
+
+    //Remove all child elements function from  https://stackoverflow.com/a/3955238
+    const deck = document.getElementById('deck');
+    while (deck.firstChild) {
+        deck.removeChild(deck.firstChild);
+    }
+
+    //add HTML to deck element
+    for(let i = 0; i < shuffled.length; i++){
+        addHTML += shuffled[i];
+    }
+    console.log('innerhtml ' + addHTML);
+    deck.innerHTML = addHTML;
+}
+displayCards(cardList());
 
 /*
  * set up the event listener for a card. If a card is clicked:
