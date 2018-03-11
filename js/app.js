@@ -30,6 +30,19 @@ function resetCounter(){
     let counter = document.getElementsByClassName('moves')[0];
     counter.textContent = '0';
 }
+/*
+* Reset ratings stars
+*/
+function resetRatings(){
+    const star = document.querySelectorAll('ul.stars li i');
+    backendCounter = 0;
+    rating = 3;
+    //loop and reset the stars
+    for(let i = star.length - 1; i >= 0; i--){
+        if(star[i].className == 'fa fa-star') continue;
+        star[i].className = 'fa fa-star';
+    }
+}
 
 /*
  * Display the cards on the page
@@ -41,6 +54,7 @@ function displayCards(cards) {
     const arr = [];
     let addHTML = '';
     resetCounter();
+    resetRatings();
 
     //retrieve trimmed HTML of each card
     for (let i = 0; i < cards.length; i++) {
@@ -152,6 +166,7 @@ function backEndCounters(){
     if(backendCounter == 12) decreaseRating();
     else if(backendCounter == 18) decreaseRating();
     else if(backendCounter >= 24) decreaseRating();
+    console.log('counter: ' + backendCounter + '\nrating: ' + rating);
 }
 
 /*
