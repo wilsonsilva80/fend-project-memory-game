@@ -98,16 +98,20 @@ deck.addEventListener('click', function(evt) {
             addCard(evt.target);
 
             if (openCards.length == 2) {
-                //if both cards are equal lock the cards
-                if (openCards[0].innerHTML == openCards[1].innerHTML) {
-                    lockCards();
-                }
-                //cards do not match
-                else {
-                    noMatchCards();
-                }
-                openCards = []; // empty the array
-                addCounter();
+                //add delay so that second card is shown
+                setTimeout(function(){
+                    //if both cards are equal lock the cards
+                    if (openCards[0].innerHTML == openCards[1].innerHTML) {
+                        lockCards();
+                    }
+                    //cards do not match
+                    else {
+                        noMatchCards();
+                    }
+                    openCards = []; // empty the array
+                    addCounter();
+                }, 250);
+
             }
             if(document.querySelectorAll('.match').length == 16){
                 setTimeout(endGameMessage, 100);
