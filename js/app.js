@@ -24,22 +24,22 @@ function shuffle(array) {
 }
 
 /*
-* Reset moves counter
-*/
-function resetCounter(){
+ * Reset moves counter
+ */
+function resetCounter() {
     let counter = document.getElementsByClassName('moves')[0];
     counter.textContent = '0';
 }
 /*
-* Reset ratings stars
-*/
-function resetRatings(){
+ * Reset ratings stars
+ */
+function resetRatings() {
     const star = document.querySelectorAll('ul.stars li i');
     backendCounter = 0;
     rating = 3;
     //loop and reset the stars
-    for(let i = star.length - 1; i >= 0; i--){
-        if(star[i].className == 'fa fa-star') continue;
+    for (let i = star.length - 1; i >= 0; i--) {
+        if (star[i].className == 'fa fa-star') continue;
         star[i].className = 'fa fa-star';
     }
 }
@@ -90,96 +90,97 @@ displayCards(cardList());
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
- var openCards = [];
- deck.addEventListener('click', function(evt){
-     evt.preventDefault();
-     if(evt.target.tagName.toLowerCase() == 'li'){ // clicked on a card
-         if(evt.target.className == 'card'){ // if card is not shown yet
+var openCards = [];
+deck.addEventListener('click', function(evt) {
+    evt.preventDefault();
+    if (evt.target.tagName.toLowerCase() == 'li') { // clicked on a card
+        if (evt.target.className == 'card') { // if card is not shown yet
             addCard(evt.target);
 
-            if(openCards.length == 2){
-                //if both cards are equal lock the cards, add the moves counter and empty the array
-                if(openCards[0].innerHTML == openCards[1].innerHTML){
+            if (openCards.length == 2) {
+                //if both cards are equal lock the cards
+                if (openCards[0].innerHTML == openCards[1].innerHTML) {
                     lockCards();
-                    addCounter();
-                    openCards = [];
                 }
                 //cards do not match
-                else{
+                else {
                     noMatchCards();
                 }
-                backEndCounters();
+                openCards = []; // empty the array
+                addCounter();
             }
-         }
-     }
- });
+            if(document.querySelectorAll('.match').length == 16){
+                setTimeout(endGameMessage, 100);
+            }
+        }
+    }
+});
 
 /*
-* Add a card to the list
-*/
- function addCard(el){
-     el.className += ' show open';
-     openCards.push(el);
- }
+ * Add a card to the list
+ */
+function addCard(el) {
+    el.className += ' show open';
+    openCards.push(el);
+}
 
 /*
-* Lock the cards in the open position
-*/
-function lockCards(){
+ * Lock the cards in the open position
+ */
+function lockCards() {
     openCards[0].className = 'card match';
     openCards[1].className = 'card match';
 }
 
 /*
-* Remove the cards from the list and hide the card's symbol
-*/
-function noMatchCards(){
+ * Remove the cards from the list and hide the card's symbol
+ */
+function noMatchCards() {
     openCards[1].className = 'card';
     openCards[0].className = 'card';
-    openCards = [];
 }
 
 /*
-* Increment the move counter and display it on the page
-*/
-function addCounter(){
+ * Increment the move counter and display it on the page
+ */
+function addCounter() {
     let counter = document.getElementsByClassName('moves')[0];
     let count = 0;
     count = parseInt(counter.textContent) + 1;
     counter.textContent = count;
+    //decrease the rating accordingly
+    if (count == 12) decreaseRating();
+    else if (count == 18) decreaseRating();
+    else if (count == 24) decreaseRating();
 }
 
 /*
-* Display a message with the final score
-*/
-function gameOver(){
-    //TODO
+ * Display a message with the final score
+ */
+function endGameMessage() {
+    //TODO add timer and question if they want to play again
+    alert(`You completed the game with a rating of ${rating}.`);
+}
+/*
+ * Start and display a timer
+ */
+function startTime() {
+    //TODO add timer to the game and display it
 }
 
-/*
-* Back end moves counter to decrease the ratings
-*/
-var backendCounter = 0;
 var rating = 3;
-function backEndCounters(){
-    backendCounter++;
-    if(backendCounter == 12) decreaseRating();
-    else if(backendCounter == 18) decreaseRating();
-    else if(backendCounter >= 24) decreaseRating();
-    console.log('counter: ' + backendCounter + '\nrating: ' + rating);
-}
 
 /*
-* Decrease the ratings
-*/
-function decreaseRating(){
+ * Decrease the ratings
+ */
+function decreaseRating() {
     const star = document.querySelectorAll('ul.stars li i');
-    if(rating > 0){
+    if (rating > 0) {
         rating -= 1;
 
         //loop and check the last star that isn't "removed"
-        for(let i = star.length - 1; i >= 0; i--){
-            if(star[i].className == 'fa fa-star'){
+        for (let i = star.length - 1; i >= 0; i--) {
+            if (star[i].className == 'fa fa-star') {
                 star[i].className = 'fa fa-star-o';
                 break;
             }
@@ -188,9 +189,9 @@ function decreaseRating(){
 }
 
 /*
-* Event listener to restart the game after clicking the icon
-*/
-document.getElementsByClassName('restart')[0].addEventListener('click',function(evt){
+ * Event listener to restart the game after clicking the icon
+ */
+document.getElementsByClassName('restart')[0].addEventListener('click', function(evt) {
     evt.preventDefault();
     displayCards(cardList());
 });
