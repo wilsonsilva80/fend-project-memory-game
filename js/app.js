@@ -97,25 +97,25 @@ deck.addEventListener('click', function(evt) {
         if (evt.target.className == 'card') { // if card is not shown yet
             addCard(evt.target);
 
-            if (openCards.length == 2) {
-                //add delay so that second card is shown
-                setTimeout(function(){
-                    //if both cards are equal lock the cards
-                    if (openCards[0].innerHTML == openCards[1].innerHTML) {
-                        lockCards();
+            //add delay so that second card is shown
+            setTimeout(function(){
+                if (openCards.length == 2) {
+                        //if both cards are equal lock the cards
+                        if (openCards[0].innerHTML == openCards[1].innerHTML) {
+                            lockCards();
+                        }
+                        //cards do not match
+                        else {
+                            noMatchCards();
+                        }
+                        openCards = []; // empty the array
+                        addCounter();
                     }
-                    //cards do not match
-                    else {
-                        noMatchCards();
+                    if(document.querySelectorAll('.match').length == 16){
+                        //add delay so that cards css are changed before this
+                        setTimeout(endGameMessage, 200);
                     }
-                    openCards = []; // empty the array
-                    addCounter();
-                }, 250);
-
-            }
-            if(document.querySelectorAll('.match').length == 16){
-                setTimeout(endGameMessage, 100);
-            }
+                }, 150);
         }
     }
 });
@@ -163,7 +163,7 @@ function addCounter() {
  */
 function endGameMessage() {
     //TODO add timer and question if they want to play again
-    alert(`You completed the game with a rating of ${rating}.`);
+    if(confirm(`You completed the game with a rating of ${rating}. Want to play again?`)) displayCards(cardList())
 }
 /*
  * Start and display a timer
