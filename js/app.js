@@ -44,6 +44,43 @@ function resetRatings() {
     }
 }
 
+ // Clock function from https://stackoverflow.com/a/36947750
+var Clock = {
+    totalSeconds: 0,
+
+    start: function() {
+        var self = this;
+
+        function pad(val) {
+            return val > 9 ? val : "0" + val;
+        }
+        this.interval = setInterval(function() {
+            // console.log($("#min").text() + ':' + $("#sec").text())
+            self.totalSeconds += 1;
+
+
+            $("#min").text(pad(Math.floor(self.totalSeconds / 60 % 60)));
+            $("#sec").text(pad(parseInt(self.totalSeconds % 60)));
+        }, 1000);
+    },
+
+    reset: function() {
+        Clock.totalSeconds = null;
+        clearInterval(this.interval);
+        $("#min").text("00");
+        $("#sec").text("00");
+    },
+
+    pause: function() {
+        clearInterval(this.interval);
+        delete this.interval;
+    },
+
+    getTime: function() {
+        return $("#min").text() + ':' + $("#sec").text();
+    }
+};
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -55,6 +92,8 @@ function displayCards(cards) {
     let addHTML = '';
     resetCounter();
     resetRatings();
+    Clock.reset();
+
 
     //retrieve trimmed HTML of each card
     for (let i = 0; i < cards.length; i++) {
@@ -91,31 +130,40 @@ displayCards(cardList());
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 var openCards = [];
+var isTime = true;
 deck.addEventListener('click', function(evt) {
     evt.preventDefault();
     if (evt.target.tagName.toLowerCase() == 'li') { // clicked on a card
         if (evt.target.className == 'card') { // if card is not shown yet
             addCard(evt.target);
 
+            if (isTime) Clock.start();
+            isTime = false;
+
             //add delay so that second card is shown
-            setTimeout(function(){
+            setTimeout(function() {
                 if (openCards.length == 2) {
-                        //if both cards are equal lock the cards
-                        if (openCards[0].innerHTML == openCards[1].innerHTML) {
-                            lockCards();
-                        }
-                        //cards do not match
-                        else {
-                            noMatchCards();
-                        }
-                        openCards = []; // empty the array
-                        addCounter();
+
+                    //if both cards are equal lock the cards
+                    if (openCards[0].innerHTML == openCards[1].innerHTML) {
+                        lockCards();
                     }
-                    if(document.querySelectorAll('.match').length == 16){
-                        //add delay so that cards css are changed before this
-                        setTimeout(endGameMessage, 200);
+
+                    //cards do not match
+                    else {
+                        noMatchCards();
                     }
-                }, 150);
+
+                    openCards = []; // empty the array
+                    addCounter();
+                }
+
+                if (document.querySelectorAll('.match').length == 16) {
+                    //add delay so that cards css are changed before this
+                    Clock.pause();
+                    setTimeout(endGameMessage, 200);
+                }
+            }, 150);
         }
     }
 });
@@ -159,17 +207,13 @@ function addCounter() {
 }
 
 /*
- * Display a message with the final score
+ * Display a message with the score and if they want to play another game.
  */
 function endGameMessage() {
-    //TODO add timer and question if they want to play again
-    if(confirm(`You completed the game with a rating of ${rating}. Want to play again?`)) displayCards(cardList())
-}
-/*
- * Start and display a timer
- */
-function startTime() {
-    //TODO add timer to the game and display it
+    if (confirm(`You completed the game in ${Clock.getTime()} with a rating of ${rating}. Want to play again?`)) {
+        isTime = true;
+        displayCards(cardList());
+    }
 }
 
 var rating = 3;
@@ -197,5 +241,6 @@ function decreaseRating() {
  */
 document.getElementsByClassName('restart')[0].addEventListener('click', function(evt) {
     evt.preventDefault();
+    isTime = true;
     displayCards(cardList());
 });
