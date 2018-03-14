@@ -201,9 +201,9 @@ function addCounter() {
     count = parseInt(counter.textContent) + 1;
     counter.textContent = count;
     //decrease the rating accordingly
-    if (count == 12) decreaseRating();
+    if (count == 14) decreaseRating();
     else if (count == 18) decreaseRating();
-    else if (count == 24) decreaseRating();
+    else if (count == 22) decreaseRating();
 }
 
 /*
