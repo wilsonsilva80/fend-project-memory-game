@@ -89,6 +89,7 @@ var Clock = {
  */
 function displayCards(cards) {
     const arr = [];
+    openCards = [];
     let addHTML = '';
     resetCounter();
     resetRatings();
@@ -97,7 +98,7 @@ function displayCards(cards) {
 
     //retrieve trimmed HTML of each card
     for (let i = 0; i < cards.length; i++) {
-        cards[i].className = 'card show open';
+        cards[i].className = 'card';
         let card = cards[i].outerHTML.trim();
         arr.push(card);
     }
@@ -116,8 +117,6 @@ function displayCards(cards) {
     }
 
     deck.innerHTML = addHTML;
-
-    setTimeout(showDeck, 2500);
 
 }
 displayCards(cardList());
@@ -175,7 +174,7 @@ deck.addEventListener('click', function(evt) {
                     Clock.pause();
                     setTimeout(endGameMessage, 200);
                 }
-            }, 150);
+            }, 250);
         }
     }
 });
@@ -184,7 +183,7 @@ deck.addEventListener('click', function(evt) {
  * Add a card to the list
  */
 function addCard(el) {
-    el.className += ' show open';
+    el.className = 'card show open';
     openCards.push(el);
 }
 
@@ -192,8 +191,8 @@ function addCard(el) {
  * Lock the cards in the open position
  */
 function lockCards() {
-    openCards[0].className = 'card match';
-    openCards[1].className = 'card match';
+    openCards[0].className = 'card match animated pulse';
+    openCards[1].className = 'card match animated pulse';
 }
 
 /*

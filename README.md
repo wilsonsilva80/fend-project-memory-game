@@ -20,7 +20,7 @@ Game is to played by clicking on the cards and trying to match a pair and do for
     * 3 stars: less than 14 moves
     * 2 stars: between 14 and 18 moves
     * 1 star: between 18 and 22 moves
-    *  no star: more than 22 moves
+    * no star: more than 22 moves
 * Timer
 * Restart button
 * Congratulations popup
@@ -30,3 +30,4 @@ Game is to played by clicking on the cards and trying to match a pair and do for
 * [Bootstrap font-awesome 4.6.1](https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css)
 * [jQuery 3.3.1](https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js)
 * [font Coda](https://fonts.googleapis.com/css?family=Coda)
+* [Animate.css](https://github.com/daneden/animate.css/)
