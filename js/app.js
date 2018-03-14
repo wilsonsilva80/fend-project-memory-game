@@ -97,7 +97,7 @@ function displayCards(cards) {
 
     //retrieve trimmed HTML of each card
     for (let i = 0; i < cards.length; i++) {
-        cards[i].className = 'card';
+        cards[i].className = 'card show open';
         let card = cards[i].outerHTML.trim();
         arr.push(card);
     }
@@ -116,8 +116,20 @@ function displayCards(cards) {
     }
 
     deck.innerHTML = addHTML;
+
+    setTimeout(showDeck, 2500);
+
 }
 displayCards(cardList());
+
+/*
+* Show deck to user
+*/
+function showDeck(){
+    for(let i = 0; i < deck.getElementsByClassName('card').length; i++){
+        deck.getElementsByClassName('card')[i].className = 'card';
+    }
+}
 
 /*
  * set up the event listener for a card. If a card is clicked:
